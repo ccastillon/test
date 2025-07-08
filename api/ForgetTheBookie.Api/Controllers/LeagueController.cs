@@ -26,7 +26,7 @@ namespace ForgetTheBookie.Api.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/User/GetAllUsers
+        // GET: api/League
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
