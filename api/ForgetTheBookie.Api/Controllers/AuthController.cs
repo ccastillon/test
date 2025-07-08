@@ -107,12 +107,12 @@ namespace ForgetTheBookie.Api.Controllers
         {
             _logger.LogInformation("Refresh called");
 
-            var prinicpal = GetPrincipalFromExpiredToken(model.AccessToken);
+            var principal = GetPrincipalFromExpiredToken(model.AccessToken);
 
-            if (prinicpal?.Identity?.Name is null)
+            if (principal?.Identity?.Name is null)
                 return Unauthorized();
 
-            var user = await _userManager.FindByNameAsync(prinicpal.Identity.Name);
+            var user = await _userManager.FindByNameAsync(principal.Identity.Name);
 
             if (user is null || user.RefreshToken != model.RefreshToken || user.RefreshTokenExpiry < DateTime.UtcNow)
                 return Unauthorized();
