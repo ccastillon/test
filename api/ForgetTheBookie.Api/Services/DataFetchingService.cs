@@ -180,11 +180,15 @@ namespace ForgetTheBookie.Api.Services
                 //var currentExternalLeagues = externalLeagues.Where(x => x.Seasons.Last()).ToList();
                 foreach (var externalLeague in externalLeagues)
                 {
-                    var externalLeagueLatestSeason = externalLeague.Seasons.OrderBy(x => x.Year).FirstOrDefault();
+                    var externalLeagueLatestSeason = externalLeague.Seasons
+                        .OrderByDescending(x => x.Year)
+                        .FirstOrDefault();
                     if (existingLeaguesDict.TryGetValue(externalLeague.League.Id, out var existingLeague))
                     {
                         // Update existing league
-                        var existingLeagueLatestSeason = existingLeague.Seasons.OrderBy(x => x.SeasonYear).FirstOrDefault();
+                        var existingLeagueLatestSeason = existingLeague.Seasons
+                            .OrderByDescending(x => x.SeasonYear)
+                            .FirstOrDefault();
                         //var bothIsCurrent = externalLeagueLatestSeason.Current == existingLeagueLatestSeason.IsCurrent;
 
                         if (existingLeagueLatestSeason.SeasonYear != externalLeagueLatestSeason.Year)
@@ -333,7 +337,9 @@ namespace ForgetTheBookie.Api.Services
             {
                 foreach (var league in existingLeagues)
                 {
-                    var leagueLatestSeason = league.Seasons.OrderBy(x => x.SeasonYear).FirstOrDefault(x => x.IsCurrent);
+                    var leagueLatestSeason = league.Seasons
+                        .FirstOrDefault(x => x.IsCurrent) ??
+                        league.Seasons.OrderByDescending(x => x.SeasonYear).FirstOrDefault();
                     if (leagueLatestSeason != null)
                     {
                         var externalTeams = await GetTeamsForLeagueAsync(league.ExternalId, leagueLatestSeason.SeasonYear);
