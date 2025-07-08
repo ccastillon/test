@@ -118,7 +118,9 @@ namespace ForgetTheBookie.Api.Controllers
         {
             try
             {
-                var existingUserBalance = await _uow.Repo<UserBalance>().GetByIdAsync(userId);
+                var existingUserBalance = await _uow.Repo<UserBalance>()
+                    .Get(x => x.UserId == userId)
+                    .FirstOrDefaultAsync();
 
                 if (existingUserBalance != null)
                 {
